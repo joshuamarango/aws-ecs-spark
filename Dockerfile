@@ -17,7 +17,7 @@ RUN sudo apt-get update
 RUN sudo apt-get install openjdk-8-jdk -y
 RUN sudo update-alternatives --config java && sudo update-alternatives --config javac
 
-# Install Python3
+# Install pip
 RUN sudo apt-get install -y python3-pip
 
 # Download Scala, Spark, Hadoop & Hive
@@ -83,15 +83,14 @@ ENV PYSPARK_DRIVER_PYTHON=/usr/bin/python3
 
 # Configure Hadoop
 RUN cd /usr/local/hadoop/etc/hadoop
-COPY ./config/hadoop-env.sh /usr/local/hadoop/etc/hadoop/
-COPY ./config/core-site.xml /usr/local/hadoop/etc/hadoop/
-COPY ./config/mapred-site.xml /usr/local/hadoop/etc/hadoop/
-COPY ./config/hdfs-site.xml /usr/local/hadoop/etc/hadoop/
-COPY ./config/yarn-site.xml /usr/local/hadoop/etc/hadoop/
+COPY ./config/hadoop/hadoop-env.sh /usr/local/hadoop/etc/hadoop/
+COPY ./config/hadoop/core-site.xml /usr/local/hadoop/etc/hadoop/
+COPY ./config/hadoop/mapred-site.xml /usr/local/hadoop/etc/hadoop/
+COPY ./config/hadoop/hdfs-site.xml /usr/local/hadoop/etc/hadoop/
+COPY ./config/hadoop/yarn-site.xml /usr/local/hadoop/etc/hadoop/
 
 # Format & Start Hadoop
 RUN mkdir -p /home/node/app && chown -R root:root /home/node/app
 WORKDIR /home/node/app
 COPY src/ ./
 RUN pip3 install -r ./requirements.txt
-RUN bash run.sh
