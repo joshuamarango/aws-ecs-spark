@@ -94,3 +94,6 @@ RUN mkdir -p /home/node/app && chown -R root:root /home/node/app
 WORKDIR /home/node/app
 COPY src/ ./
 RUN pip3 install -r ./requirements.txt
+
+EXPOSE 4050
+CMD [ "bash", "spark-structured-stream.sh" ]
